@@ -14,6 +14,7 @@ import butterknife.ButterKnife;
 import mbd.teacher.gurukuteacher.R;
 import mbd.teacher.gurukuteacher.fragment.AccountFragment;
 import mbd.teacher.gurukuteacher.fragment.HomeFragment;
+import mbd.teacher.gurukuteacher.fragment.StudentFragment;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
@@ -44,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.nav_home :
                     if (!(currentFragment instanceof HomeFragment)) {
                         fragment = new HomeFragment();
+                        loadFragment(fragment);
+                        return true;
+                    }
+                    break;
+                case R.id.nav_student:
+                    if (!(currentFragment instanceof StudentFragment)) {
+                        fragment = new StudentFragment();
                         loadFragment(fragment);
                         return true;
                     }

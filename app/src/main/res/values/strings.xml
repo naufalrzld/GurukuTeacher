@@ -28,14 +28,14 @@
     <string name="tv_about">Tentang</string>
     <string name="tv_logout">Keluar</string>
 
-    <!--TeacherFragmentment-->
-    <string name="noData">Guru Tidak Tersedia</string>
+    <!--StudentFragmentment-->
+    <string name="noData">Tidak Ada Permintaan</string>
 
     <!--HistoryFragment-->
     <string name="noHistory">Tidak ada riwayat</string>
 
-    <!--GuruItem-->
-    <string name="tv_per_jam">per jam</string>
+    <!--StudentItem-->
+    <string name="tv_jam">jam</string>
 
     <!--TeacherDetail-->
     <string name="activity_title_detail_teacher">Rincian Guru</string>
@@ -58,4 +58,7 @@
     <string name="txt_saldo_wallet">Saldo Wallet :</string>
     <string name="txt_btn_book_now">Pesan Sekarang</string>
     <string name="txt_btn_pay">Bayar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
