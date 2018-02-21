@@ -28,8 +28,10 @@ import butterknife.ButterKnife;
 import mbd.teacher.gurukuteacher.R;
 import mbd.teacher.gurukuteacher.model.student.DataRequest;
 import mbd.teacher.gurukuteacher.model.student.Student;
+import mbd.teacher.gurukuteacher.model.teacher.Teacher;
 import mbd.teacher.gurukuteacher.model.transaction.Data;
 import mbd.teacher.gurukuteacher.services.RetrofitServices;
+import mbd.teacher.gurukuteacher.utils.SharedPreferencesUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,7 +75,10 @@ public class DetailStudentActivity extends AppCompatActivity {
     private ColorGenerator mColorGenerator = ColorGenerator.DEFAULT;
     private TextDrawable mDrawableBuilder;
 
+    private SharedPreferencesUtils sharedPreferencesUtils;
     private Intent dataIntent;
+
+    private int price;
 
     private ProgressDialog loading;
 
@@ -92,13 +97,19 @@ public class DetailStudentActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        sharedPreferencesUtils = new SharedPreferencesUtils(getApplicationContext(), "DataMember");
+        if (sharedPreferencesUtils.checkIfDataExists("profile")) {
+            Teacher teacher = sharedPreferencesUtils.getObjectData("profile", Teacher.class);
+            price = teacher.getPrice();
+        }
+
         dataIntent = getIntent();
 
         String from = dataIntent.getStringExtra("from");
         Student student;
         final int bookID;
         int status, statusTrx = 0;
-        int duration;
+        final int duration;
         if (from.equals("Stdn")) {
             DataRequest dataRequest = new Gson().fromJson(dataIntent.getStringExtra("bookData"), DataRequest.class);
             student = dataRequest.getStudent();
@@ -159,6 +170,7 @@ public class DetailStudentActivity extends AppCompatActivity {
                 try {
                     param.put("bookID", bookID);
                     param.put("status", 1);
+                    param.put("total_price", price*duration);
 
                     acceptRequest(param);
                 } catch (JSONException e) {
