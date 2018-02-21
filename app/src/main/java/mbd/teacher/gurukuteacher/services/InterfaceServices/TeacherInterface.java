@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import mbd.teacher.gurukuteacher.model.student.StudentReqeustResponse;
 import mbd.teacher.gurukuteacher.model.teacher.LoginResponse;
+import mbd.teacher.gurukuteacher.model.transaction.TransactionResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -23,4 +24,10 @@ public interface TeacherInterface {
 
     @GET("/teacher/getStudentRequest/{teacherID}")
     Call<StudentReqeustResponse> APIGetStudentReqeuest(@Path("teacherID") int teacherID);
+
+    @POST("/teacher/acceptRequest")
+    Call<String> APIAcceptRequest(@Body JSONObject param);
+
+    @GET("/teacher/transaction/{teacherID}")
+    Call<TransactionResponse> APIGetTransaction(@Path("teacherID") int teacherID);
 }

@@ -18,18 +18,22 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mbd.teacher.gurukuteacher.R;
-import mbd.teacher.gurukuteacher.adapter.StudentAdapter;
-import mbd.teacher.gurukuteacher.model.student.DataRequest;
+import mbd.teacher.gurukuteacher.adapter.TransactionAdapter;
 import mbd.teacher.gurukuteacher.model.student.Student;
-import mbd.teacher.gurukuteacher.model.student.StudentReqeustResponse;
 import mbd.teacher.gurukuteacher.model.teacher.Teacher;
+import mbd.teacher.gurukuteacher.model.transaction.Data;
+import mbd.teacher.gurukuteacher.model.transaction.Transaction;
+import mbd.teacher.gurukuteacher.model.transaction.TransactionResponse;
 import mbd.teacher.gurukuteacher.services.RetrofitServices;
 import mbd.teacher.gurukuteacher.utils.SharedPreferencesUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class StudentFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class TransactionFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.rvStudent)
@@ -37,22 +41,23 @@ public class StudentFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @BindView(R.id.tvNoData)
     TextView tvNoData;
 
-    private List<DataRequest> dataRequestList = new ArrayList<>();
-    private StudentAdapter adapter;
+    private List<Data> listData = new ArrayList<>();
+    private TransactionAdapter adapter;
 
     private SharedPreferencesUtils sharedPreferencesUtils;
 
     private int teacherID;
 
-    public StudentFragment() {
+    public TransactionFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_student, container, false);
+        View v = inflater.inflate(R.layout.fragment_transaction, container, false);
         ButterKnife.bind(this, v);
 
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -63,7 +68,7 @@ public class StudentFragment extends Fragment implements SwipeRefreshLayout.OnRe
             teacherID = teacher.getTeacherID();
         }
 
-        adapter = new StudentAdapter(getContext(), dataRequestList);
+        adapter = new TransactionAdapter(getContext(), listData);
         rvStudent.setHasFixedSize(true);
         rvStudent.setLayoutManager(new LinearLayoutManager(getContext()));
         rvStudent.setAdapter(adapter);
@@ -74,28 +79,39 @@ public class StudentFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public void onResume() {
         super.onResume();
-        getStudentRequest(teacherID);
+        getTransaction(teacherID);
     }
 
-    private void getStudentRequest(int teacherID) {
+    @Override
+    public void onRefresh() {
+        getTransaction(teacherID);
+    }
+
+    private void getTransaction(int teacherID) {
         swipeRefreshLayout.setRefreshing(true);
-        dataRequestList.clear();
-        Call<StudentReqeustResponse> call = RetrofitServices.sendTeacherRequest().APIGetStudentReqeuest(teacherID);
+        listData.clear();
+        Call<TransactionResponse> call = RetrofitServices.sendTeacherRequest().APIGetTransaction(teacherID);
         if (call != null) {
-            call.enqueue(new Callback<StudentReqeustResponse>() {
+            call.enqueue(new Callback<TransactionResponse>() {
                 @Override
-                public void onResponse(@NonNull Call<StudentReqeustResponse> call, @NonNull Response<StudentReqeustResponse> response) {
+                public void onResponse(@NonNull Call<TransactionResponse> call, @NonNull Response<TransactionResponse> response) {
                     swipeRefreshLayout.setRefreshing(false);
                     if (response.isSuccessful()) {
                         int count = response.body().getData().size();
 
                         for (int i=0; i<count; i++) {
-                            DataRequest dataRequest = response.body().getData().get(i);
-                            Student student = dataRequest.getStudent();
+                            Data data = response.body().getData().get(i);
+                            Student student = data.getStudent();
+                            Transaction transaction = data.getTransaction();
 
-                            int bookID = dataRequest.getBookID();
-                            int status = dataRequest.getStatus();
-                            int duration = dataRequest.getDuration();
+                            int bookID = data.getBookID();
+                            int status = data.getStatus();
+                            int duration = data.getDuration();
+
+                            int trasactionID = transaction.getTransactioID();
+                            int statusTrx = transaction.getStatus();
+                            String paymentMethod = transaction.getPaymentMethod();
+                            int totalPrice = transaction.getTotalPrice();
 
                             int studentID = student.getStudentID();
                             String username = student.getUsername();
@@ -108,12 +124,13 @@ public class StudentFragment extends Fragment implements SwipeRefreshLayout.OnRe
                             String igAccount = student.getIgAccount();
                             String otherAccount = student.getOtherAccount();
 
-                            dataRequestList.add(new DataRequest(bookID, status, duration,
-                                    new Student(studentID, username, fName, lName, email, noTlp, lineAccount,
-                                            noWA, igAccount, otherAccount)));
+                            listData.add(new Data(bookID, status, duration,
+                                    new Student(studentID, username, fName, lName, email, noTlp,
+                                            lineAccount, noWA, igAccount, otherAccount),
+                                    new Transaction(trasactionID, bookID, statusTrx, paymentMethod, totalPrice)));
                         }
 
-                        if (dataRequestList.isEmpty()) {
+                        if (listData.isEmpty()) {
                             tvNoData.setVisibility(View.VISIBLE);
                         } else {
                             tvNoData.setVisibility(View.GONE);
@@ -124,16 +141,11 @@ public class StudentFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<StudentReqeustResponse> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<TransactionResponse> call, @NonNull Throwable t) {
                     swipeRefreshLayout.setRefreshing(false);
                     Log.d("error", t.getMessage());
                 }
             });
         }
-    }
-
-    @Override
-    public void onRefresh() {
-        getStudentRequest(teacherID);
     }
 }

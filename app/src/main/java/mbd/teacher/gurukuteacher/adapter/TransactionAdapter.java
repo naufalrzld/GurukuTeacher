@@ -22,21 +22,23 @@ import mbd.teacher.gurukuteacher.R;
 import mbd.teacher.gurukuteacher.activity.DetailStudentActivity;
 import mbd.teacher.gurukuteacher.model.student.DataRequest;
 import mbd.teacher.gurukuteacher.model.student.Student;
+import mbd.teacher.gurukuteacher.model.transaction.Data;
+import mbd.teacher.gurukuteacher.model.transaction.Transaction;
 
 /**
  * Created by Naufal on 20/02/2018.
  */
 
-public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHolder> {
+public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.ViewHolder> {
     private Context context;
-    private List<DataRequest> dataRequestList;
+    private List<Data> listData;
 
     private ColorGenerator mColorGenerator = ColorGenerator.DEFAULT;
     private TextDrawable mDrawableBuilder;
 
-    public StudentAdapter(Context context, List<DataRequest> dataRequestList) {
+    public TransactionAdapter(Context context, List<Data> listData) {
         this.context = context;
-        this.dataRequestList = dataRequestList;
+        this.listData = listData;
     }
 
     @Override
@@ -47,22 +49,23 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final DataRequest dataRequest = dataRequestList.get(position);
-        Student student = dataRequest.getStudent();
+        final Data data = listData.get(position);
+        Student student = data.getStudent();
+        Transaction transaction = data.getTransaction();
 
-        int status = dataRequest.getStatus();
+        int status = transaction.getStatus();
 
         String studentName = student.getFirstName() + " " + student.getLastName();
-        String duration = String.valueOf(dataRequest.getDuration());
+        String duration = String.valueOf(data.getDuration());
 
         setProfileImage(holder.profile_image, studentName);
 
         String information;
 
         if (status == 0) {
-            information = "Menunggu konfirmasi anda";
+            information = "Menunggu pembayaran";
         } else {
-            information = "Sudah dikonfirmasi";
+            information = "Sudah dibayar";
         }
 
         holder.tvStudentName.setText(studentName);
@@ -71,11 +74,11 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         holder.cvItemStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String data = new Gson().toJson(dataRequest);
+                String bookData = new Gson().toJson(data);
 
                 Intent i = new Intent(context, DetailStudentActivity.class);
-                i.putExtra("from", "Stdn");
-                i.putExtra("bookData", data);
+                i.putExtra("from", "Trx");
+                i.putExtra("bookData", bookData);
                 context.startActivity(i);
             }
         });
@@ -83,7 +86,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return dataRequestList.size();
+        return listData.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

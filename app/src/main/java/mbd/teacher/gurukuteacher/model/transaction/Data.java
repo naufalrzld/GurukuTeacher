@@ -1,13 +1,15 @@
-package mbd.teacher.gurukuteacher.model.student;
+package mbd.teacher.gurukuteacher.model.transaction;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import mbd.teacher.gurukuteacher.model.student.Student;
+
 /**
- * Created by Naufal on 20/02/2018.
+ * Created by Naufal on 21/02/2018.
  */
 
-public class DataRequest {
+public class Data {
     @SerializedName("bookID")
     @Expose
     private Integer bookID;
@@ -32,12 +34,16 @@ public class DataRequest {
     @SerializedName("Student")
     @Expose
     private Student student;
+    @SerializedName("Transaction")
+    @Expose
+    private Transaction transaction;
 
-    public DataRequest(Integer bookID, Integer status, Integer duration, Student student) {
+    public Data(Integer bookID, Integer status, Integer duration, Student student, Transaction transaction) {
         this.bookID = bookID;
         this.status = status;
         this.duration = duration;
         this.student = student;
+        this.transaction = transaction;
     }
 
     public Integer getBookID() {
@@ -102,5 +108,13 @@ public class DataRequest {
 
     public void setStudent(Student student) {
         this.student = student;
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
     }
 }

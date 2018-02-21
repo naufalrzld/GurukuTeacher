@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Naufal on 20/02/2018.
  */
 
-public class Student extends DataRequest {
+public class Student {
     @SerializedName("studentID")
     @Expose
     private Integer studentID;
@@ -45,9 +45,10 @@ public class Student extends DataRequest {
     @Expose
     private String updatedAt;
 
-    public Student(Integer studentID, String firstName, String lastName, String email, String noTlp,
+    public Student(Integer studentID, String username, String firstName, String lastName, String email, String noTlp,
                    String lineAccount, String noWA, String igAccount, String otherAccount) {
         this.studentID = studentID;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

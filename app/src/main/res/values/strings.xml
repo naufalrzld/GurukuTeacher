@@ -17,8 +17,8 @@
     <string name="hint_cPassword">Konfirmasi Password</string>
 
     <!--menu_nav_bottom-->
-    <string name="title_home">Home</string>
     <string name="title_student">Murid</string>
+    <string name="title_transaction">Transaksi</string>
     <string name="title_history">Riwayat</string>
     <string name="title_akun">Akun</string>
 
@@ -31,16 +31,14 @@
     <!--StudentFragmentment-->
     <string name="noData">Tidak Ada Permintaan</string>
 
+    <!--TransactionFragment-->
+    <string name="noDataTransaction">Tidak Ada Transaksi</string>
+
     <!--HistoryFragment-->
     <string name="noHistory">Tidak ada riwayat</string>
 
     <!--StudentItem-->
     <string name="tv_jam">jam</string>
-
-    <!--TeacherDetail-->
-    <string name="activity_title_detail_teacher">Rincian Guru</string>
-    <string name="txt_btn_book">Pesan Guru</string>
-    <string name="tv_per_jam_2">/ jam</string>
 
     <!--BookingTeacherActivity-->
     <string name="activity_title_booking_teacher">Pemesanan</string>
@@ -59,6 +57,11 @@
     <string name="txt_btn_book_now">Pesan Sekarang</string>
     <string name="txt_btn_pay">Bayar</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--DetailStudentActivity-->
+    <string name="tv_payment_status">Status Pembayaran</string>
+    <string name="tv_duration">Durasi</string>
+    <string name="activity_title_detail_student">Rincian Murid</string>
+    <string name="txt_btn_acc">Terima</string>
+    <string name="txt_btn_reject">Tolak</string>
+    <string name="tv_status">Status</string>
 </resources>

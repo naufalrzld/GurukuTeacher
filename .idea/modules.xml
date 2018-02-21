@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GurukuTeacher.iml" filepath="$PROJECT_DIR$/GurukuTeacher.iml" />
+      <module fileurl="file://D:\Project\Android\GurukuTeacher\GurukuTeacher.iml" filepath="D:\Project\Android\GurukuTeacher\GurukuTeacher.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\Project\Android\GurukuTeacher\app\app.iml" filepath="D:\Project\Android\GurukuTeacher\app\app.iml" />
     </modules>
   </component>
 </project>
