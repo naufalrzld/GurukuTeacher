@@ -14,6 +14,7 @@
     <string name="hint_lName">Nama Belakang</string>
     <string name="hint_email">Email</string>
     <string name="hint_notlp">Nomor Telepon</string>
+    <string name="hint_price">Tarif per Jam</string>
     <string name="hint_cPassword">Konfirmasi Password</string>
 
     <!--menu_nav_bottom-->

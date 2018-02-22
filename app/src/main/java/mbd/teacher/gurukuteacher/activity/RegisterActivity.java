@@ -38,6 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputLayout ilEmail;
     @BindView(R.id.ilNoTlp)
     TextInputLayout ilNoTlp;
+    @BindView(R.id.ilPrice)
+    TextInputLayout ilPrice;
     @BindView(R.id.ilPassword)
     TextInputLayout ilPassword;
     @BindView(R.id.ilCPassword)
@@ -53,6 +55,8 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputEditText etEmail;
     @BindView(R.id.etNoTlp)
     TextInputEditText etNoTlp;
+    @BindView(R.id.etPrice)
+    TextInputEditText etPrice;
     @BindView(R.id.etPassword)
     TextInputEditText etPassword;
     @BindView(R.id.etCPassword)
@@ -82,6 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
                     String username = etUsername.getText().toString();
                     String email = etEmail.getText().toString();
                     String noTpl = etNoTlp.getText().toString();
+                    String tarif = etPrice.getText().toString();
                     String password = etPassword.getText().toString();
 
                     try {
@@ -91,6 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
                         params.put("lastName", lName);
                         params.put("email", email);
                         params.put("no_tlp", noTpl);
+                        params.put("price", tarif);
                         params.put("password", password);
 
                         register(params);
@@ -106,6 +112,9 @@ public class RegisterActivity extends AppCompatActivity {
         ilFirstName.setErrorEnabled(false);
         ilLastName.setErrorEnabled(false);
         ilUsername.setErrorEnabled(false);
+        ilEmail.setErrorEnabled(false);
+        ilNoTlp.setErrorEnabled(false);
+        ilPrice.setErrorEnabled(false);
         ilPassword.setErrorEnabled(false);
         ilCPassword.setErrorEnabled(false);
 
@@ -114,6 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
                 TextUtils.isEmpty(etUsername.getText().toString()) ||
                 TextUtils.isEmpty(etEmail.getText().toString()) ||
                 TextUtils.isEmpty(etNoTlp.getText().toString()) ||
+                TextUtils.isEmpty(etPrice.getText().toString()) ||
                 TextUtils.isEmpty(etPassword.getText().toString()) ||
                 TextUtils.isEmpty(etCPassword.getText().toString())) {
             if (TextUtils.isEmpty(etFirstName.getText().toString())) {
@@ -139,6 +149,11 @@ public class RegisterActivity extends AppCompatActivity {
             if (TextUtils.isEmpty(etNoTlp.getText().toString())) {
                 ilNoTlp.setErrorEnabled(true);
                 ilNoTlp.setError("Silahkan masukkan nomor telepon anda");
+            }
+
+            if (TextUtils.isEmpty(etPrice.getText().toString())) {
+                ilPrice.setErrorEnabled(true);
+                ilPrice.setError("Silahkan masukkan tarif per jam anda");
             }
 
             if (TextUtils.isEmpty(etPassword.getText().toString())) {
