@@ -6,25 +6,36 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.jaredrummler.materialspinner.MaterialSpinner;
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.mikepenz.fastadapter.listeners.ClickEventHook;
+import com.mikepenz.fastadapter.listeners.EventHook;
+import com.mikepenz.fastadapter.select.SelectExtension;
+import com.mikepenz.fastadapter.utils.EventHookUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -32,6 +43,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mbd.teacher.gurukuteacher.R;
+import mbd.teacher.gurukuteacher.adapter.CategoryAdapter;
 import mbd.teacher.gurukuteacher.model.APIErrorModel;
 import mbd.teacher.gurukuteacher.model.teacher.Category;
 import mbd.teacher.gurukuteacher.model.teacher.CategoryResponse;
@@ -75,18 +87,21 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputEditText etPassword;
     @BindView(R.id.etCPassword)
     TextInputEditText etCPassword;
+    @BindView(R.id.rvCategory)
+    RecyclerView rvCategory;
 
     @BindView(R.id.btnDaftar)
     Button btnDaftar;
     @BindView(R.id.btnAddNewCategory)
     Button btnAddNewCategory;
 
-    @BindView(R.id.lytParent)
-    LinearLayout lytParent;
     @BindView(R.id.spnCategory)
     MaterialSpinner spnCategory;
 
     private List<Category> categories = new ArrayList<>();
+    private FastAdapter<CategoryAdapter> mCategoryAdapter;
+    private ItemAdapter<CategoryAdapter> mCategoryItemAdapter;
+    private SelectExtension<CategoryAdapter> selectExtension;
 
     private ProgressDialog registerLoading;
 
@@ -103,10 +118,41 @@ public class RegisterActivity extends AppCompatActivity {
 
         spnCategory.setText("Memuat . . .");
 
+        mCategoryItemAdapter = new ItemAdapter<>();
+
+        mCategoryAdapter = FastAdapter.with(Arrays.asList(mCategoryItemAdapter));
+        mCategoryAdapter.withSelectable(true);
+        mCategoryAdapter.withMultiSelect(true);
+        mCategoryAdapter.withSelectOnLongClick(false);
+        selectExtension = mCategoryAdapter.getExtension(SelectExtension.class);
+
+        rvCategory.setLayoutManager(new LinearLayoutManager(this));
+        rvCategory.setAdapter(mCategoryAdapter);
+
         btnAddNewCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onAddField();
+                int lastVisiblePosition;
+                lastVisiblePosition = ((LinearLayoutManager) rvCategory.getLayoutManager()).findLastVisibleItemPosition();
+                mCategoryItemAdapter.add(lastVisiblePosition + 1, new CategoryAdapter(categories));
+                rvCategory.scrollToPosition(lastVisiblePosition+1);
+            }
+        });
+
+        mCategoryAdapter.withEventHook(new ClickEventHook<CategoryAdapter>() {
+            @Nullable
+            @Override
+            public View onBind(RecyclerView.ViewHolder viewHolder) {
+                if (viewHolder instanceof CategoryAdapter.ViewHolder) {
+                    return ((CategoryAdapter.ViewHolder) viewHolder).btnDeleteField;
+                }
+                return null;
+            }
+
+            @Override
+            public void onClick(View v, int position, FastAdapter<CategoryAdapter> fastAdapter, CategoryAdapter item) {
+                selectExtension.select(position);
+                selectExtension.deleteAllSelectedItems();
             }
         });
 
@@ -122,6 +168,9 @@ public class RegisterActivity extends AppCompatActivity {
                     String tarif = etPrice.getText().toString();
                     String password = etPassword.getText().toString();
 
+                    int index = spnCategory.getSelectedIndex();
+                    int categoryID = categories.get(index).getCategoryID();
+
                     try {
                         JSONObject params = new JSONObject();
                         params.put("username", username);
@@ -129,6 +178,7 @@ public class RegisterActivity extends AppCompatActivity {
                         params.put("lastName", lName);
                         params.put("email", email);
                         params.put("no_tlp", noTpl);
+                        params.put("categoryID", categoryID);
                         params.put("price", tarif);
                         params.put("password", password);
 
@@ -228,35 +278,10 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
-    private void onAddField() {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View rowView = inflater.inflate(R.layout.field_category, null);
-        FieldCategoryView fieldCategoryView = new FieldCategoryView(rowView);
-        fieldCategoryView.btnDeleteField.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                lytParent.removeView(rowView);
-            }
-        });
-        setToSpinner(categories, fieldCategoryView.spnCategory);
-        lytParent.addView(rowView, lytParent.getChildCount()-1);
-    }
-
-    private void onDeleteField(View v) {
-        lytParent.removeView((View) v.getParent());
-    }
-
     private void setToSpinner(List<Category> categories, MaterialSpinner spnCategory) {
         List<String> categoryName = new ArrayList<>();
 
         if (!categories.isEmpty()) {
-            Collections.sort(categories, new Comparator<Category>() {
-                @Override
-                public int compare(Category s1, Category s2) {
-                    return s1.getCategoryName().compareTo(s2.getCategoryName());
-                }
-            });
-
             for (Category category : categories) {
                 categoryName.add(category.getCategoryName());
             }
@@ -277,6 +302,13 @@ public class RegisterActivity extends AppCompatActivity {
                         for (int i=0; i<size; i++) {
                             categories.add(response.body().getData().get(i));
                         }
+
+                        Collections.sort(categories, new Comparator<Category>() {
+                            @Override
+                            public int compare(Category s1, Category s2) {
+                                return s1.getCategoryName().compareTo(s2.getCategoryName());
+                            }
+                        });
 
                         setToSpinner(categories, spnCategory);
                     }
