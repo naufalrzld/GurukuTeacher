@@ -1,7 +1,9 @@
 package mbd.teacher.gurukuteacher.activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
@@ -10,17 +12,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mbd.teacher.gurukuteacher.R;
 import mbd.teacher.gurukuteacher.model.APIErrorModel;
+import mbd.teacher.gurukuteacher.model.teacher.Category;
+import mbd.teacher.gurukuteacher.model.teacher.CategoryResponse;
 import mbd.teacher.gurukuteacher.services.RetrofitServices;
 import mbd.teacher.gurukuteacher.utils.APIErrorUtils;
 import retrofit2.Call;
@@ -64,9 +78,19 @@ public class RegisterActivity extends AppCompatActivity {
 
     @BindView(R.id.btnDaftar)
     Button btnDaftar;
+    @BindView(R.id.btnAddNewCategory)
+    Button btnAddNewCategory;
+
+    @BindView(R.id.lytParent)
+    LinearLayout lytParent;
+    @BindView(R.id.spnCategory)
+    MaterialSpinner spnCategory;
+
+    private List<Category> categories = new ArrayList<>();
 
     private ProgressDialog registerLoading;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +100,15 @@ public class RegisterActivity extends AppCompatActivity {
         registerLoading = new ProgressDialog(this);
         registerLoading.setMessage("Loading . . .");
         registerLoading.setCancelable(false);
+
+        spnCategory.setText("Memuat . . .");
+
+        btnAddNewCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAddField();
+            }
+        });
 
         btnDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +139,8 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
+        getCategory();
     }
 
     private boolean isInputValid() {
@@ -193,6 +228,68 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
+    private void onAddField() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View rowView = inflater.inflate(R.layout.field_category, null);
+        FieldCategoryView fieldCategoryView = new FieldCategoryView(rowView);
+        fieldCategoryView.btnDeleteField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lytParent.removeView(rowView);
+            }
+        });
+        setToSpinner(categories, fieldCategoryView.spnCategory);
+        lytParent.addView(rowView, lytParent.getChildCount()-1);
+    }
+
+    private void onDeleteField(View v) {
+        lytParent.removeView((View) v.getParent());
+    }
+
+    private void setToSpinner(List<Category> categories, MaterialSpinner spnCategory) {
+        List<String> categoryName = new ArrayList<>();
+
+        if (!categories.isEmpty()) {
+            Collections.sort(categories, new Comparator<Category>() {
+                @Override
+                public int compare(Category s1, Category s2) {
+                    return s1.getCategoryName().compareTo(s2.getCategoryName());
+                }
+            });
+
+            for (Category category : categories) {
+                categoryName.add(category.getCategoryName());
+            }
+        }
+
+        spnCategory.setItems(categoryName);
+    }
+
+    private void getCategory() {
+        Call<CategoryResponse> call = RetrofitServices.sendTeacherRequest().APIGetAllCategory();
+        if (call != null) {
+            call.enqueue(new Callback<CategoryResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<CategoryResponse> call, @NonNull Response<CategoryResponse> response) {
+                    if (response.isSuccessful()) {
+                        spnCategory.setText("");
+                        int size = response.body().getData().size();
+                        for (int i=0; i<size; i++) {
+                            categories.add(response.body().getData().get(i));
+                        }
+
+                        setToSpinner(categories, spnCategory);
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<CategoryResponse> call, @NonNull Throwable t) {
+                    Log.e("error", t.getMessage());
+                }
+            });
+        }
+    }
+
     private void register(JSONObject param) {
         registerLoading.show();
         Call<String> call = RetrofitServices.sendTeacherRequest().APIRegister(param);
@@ -233,6 +330,17 @@ public class RegisterActivity extends AppCompatActivity {
                     Log.e("error", t.getMessage());
                 }
             });
+        }
+    }
+
+    protected static class FieldCategoryView {
+        @BindView(R.id.spnCategory)
+        MaterialSpinner spnCategory;
+        @BindView(R.id.btnDeleteField)
+        ImageButton btnDeleteField;
+
+        FieldCategoryView(View v) {
+            ButterKnife.bind(this, v);
         }
     }
 }

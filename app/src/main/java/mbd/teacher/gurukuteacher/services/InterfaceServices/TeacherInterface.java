@@ -3,6 +3,7 @@ package mbd.teacher.gurukuteacher.services.InterfaceServices;
 import org.json.JSONObject;
 
 import mbd.teacher.gurukuteacher.model.student.StudentReqeustResponse;
+import mbd.teacher.gurukuteacher.model.teacher.CategoryResponse;
 import mbd.teacher.gurukuteacher.model.teacher.LoginResponse;
 import mbd.teacher.gurukuteacher.model.transaction.TransactionResponse;
 import retrofit2.Call;
@@ -16,6 +17,9 @@ import retrofit2.http.Path;
  */
 
 public interface TeacherInterface {
+    @GET("teacher/getCategory")
+    Call<CategoryResponse> APIGetAllCategory();
+
     @POST("/teacher/register")
     Call<String> APIRegister(@Body JSONObject param);
 
