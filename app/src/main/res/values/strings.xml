@@ -65,4 +65,13 @@
     <string name="txt_btn_acc">Terima</string>
     <string name="txt_btn_reject">Tolak</string>
     <string name="tv_status">Status</string>
+    <string name="tv_media_social">Media Sosial</string>
+    <string name="tv_no_wa">Nomor WhatsApp</string>
+    <string name="tv_id_line">ID Line</string>
+    <string name="txt_btn_simpan">Simpan</string>
+    <string name="txt_btn_batal">Batal</string>
+    <string name="tv_profile">Profile</string>
+
+    <string name="activity_title_edit_profile">Edit Profile</string>
+    <string name="tv_edit_profile">Ubah Profile</string>
 </resources>

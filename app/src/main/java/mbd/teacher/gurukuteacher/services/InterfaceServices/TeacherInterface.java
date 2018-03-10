@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import mbd.teacher.gurukuteacher.model.student.StudentReqeustResponse;
 import mbd.teacher.gurukuteacher.model.teacher.CategoryResponse;
 import mbd.teacher.gurukuteacher.model.teacher.LoginResponse;
+import mbd.teacher.gurukuteacher.model.teacher.UpdateProfileResponse;
 import mbd.teacher.gurukuteacher.model.transaction.TransactionResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -22,6 +23,9 @@ public interface TeacherInterface {
 
     @POST("/teacher/register")
     Call<String> APIRegister(@Body JSONObject param);
+
+    @POST("/student/editProfile")
+    Call<UpdateProfileResponse> APIEditProfile(@Body JSONObject param);
 
     @POST("/teacher/login")
     Call<LoginResponse> APILogin(@Body JSONObject param);

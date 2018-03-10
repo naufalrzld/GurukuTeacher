@@ -16,6 +16,7 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mbd.teacher.gurukuteacher.R;
+import mbd.teacher.gurukuteacher.activity.EditProfileActivity;
 import mbd.teacher.gurukuteacher.activity.LoginActivity;
 import mbd.teacher.gurukuteacher.model.teacher.Teacher;
 import mbd.teacher.gurukuteacher.utils.SessionManager;
@@ -35,6 +36,12 @@ public class AccountFragment extends Fragment {
     TextView tvNoTlp;
     @BindView(R.id.tvEmail)
     TextView tvEmail;
+    @BindView(R.id.tvNoWa)
+    TextView tvNoWA;
+    @BindView(R.id.tvLineAccount)
+    TextView tvLineAccout;
+    @BindView(R.id.tvEditProfile)
+    TextView tvEditProfile;
     @BindView(R.id.tvLogout)
     TextView tvLogout;
 
@@ -59,29 +66,45 @@ public class AccountFragment extends Fragment {
         session = new SessionManager(getContext());
         sharedPreferencesUtils = new SharedPreferencesUtils(getContext(), "DataMember");
 
+        tvEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), EditProfileActivity.class);
+                startActivity(i);
+            }
+        });
+
+        tvLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+
+        return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if (sharedPreferencesUtils.checkIfDataExists("profile")) {
             teacher = sharedPreferencesUtils.getObjectData("profile", Teacher.class);
             String nama = teacher.getFirstName() + " " + teacher.getLastName();
             String username = teacher.getUsername();
             String noTlp = teacher.getNoTlp();
             String email = teacher.getEmail();
+            String noWA = teacher.getNoWA();
+            String IDLine = teacher.getLineAccount();
 
             tvNama.setText(nama);
             tvUsername.setText(username);
             tvNoTlp.setText(noTlp);
             tvEmail.setText(email);
+            tvNoWA.setText(noWA);
+            tvLineAccout.setText(IDLine);
 
             setProfileImage(nama);
-
-            tvLogout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    logout();
-                }
-            });
         }
-
-        return v;
     }
 
     private void setProfileImage(String nama) {
