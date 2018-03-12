@@ -24,7 +24,7 @@ public interface TeacherInterface {
     @POST("/teacher/register")
     Call<String> APIRegister(@Body JSONObject param);
 
-    @POST("/student/editProfile")
+    @POST("/teacher/editProfile")
     Call<UpdateProfileResponse> APIEditProfile(@Body JSONObject param);
 
     @POST("/teacher/login")

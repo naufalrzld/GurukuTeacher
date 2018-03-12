@@ -74,4 +74,6 @@
 
     <string name="activity_title_edit_profile">Edit Profile</string>
     <string name="tv_edit_profile">Ubah Profile</string>
+    <string name="tv_date">Tanggal</string>
+    <string name="tv_time">Waktu</string>
 </resources>
