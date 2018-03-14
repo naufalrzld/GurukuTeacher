@@ -164,13 +164,29 @@ public class DetailStudentActivity extends AppCompatActivity {
 
         setProfileImage(nama);
 
+        final JSONObject param = new JSONObject();
+
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JSONObject param = new JSONObject();
                 try {
                     param.put("bookID", bookID);
                     param.put("status", 1);
+                    param.put("total_price", price*duration);
+
+                    acceptRequest(param);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        btnReject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    param.put("bookID", bookID);
+                    param.put("status", 2);
                     param.put("total_price", price*duration);
 
                     acceptRequest(param);
