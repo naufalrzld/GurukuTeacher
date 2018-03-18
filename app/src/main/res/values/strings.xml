@@ -2,7 +2,7 @@
     <string name="app_name">GuruKu Teacher</string>
 
     <!--LoginActivity-->
-    <string name="txt_login">Login</string>
+    <string name="txt_login">Masuk</string>
     <string name="hint_username">Username</string>
     <string name="hint_password">Password</string>
     <string name="txt_btn_login">Masuk</string>
@@ -61,6 +61,7 @@
     <!--DetailStudentActivity-->
     <string name="tv_payment_status">Status Pembayaran</string>
     <string name="tv_duration">Durasi</string>
+    <string name="tv_location">Lokasi</string>
     <string name="activity_title_detail_student">Rincian Murid</string>
     <string name="txt_btn_acc">Terima</string>
     <string name="txt_btn_reject">Tolak</string>

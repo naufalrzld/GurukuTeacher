@@ -13,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import mbd.teacher.gurukuteacher.R;
 import mbd.teacher.gurukuteacher.fragment.AccountFragment;
+import mbd.teacher.gurukuteacher.fragment.HistoryFragment;
 import mbd.teacher.gurukuteacher.fragment.TransactionFragment;
 import mbd.teacher.gurukuteacher.fragment.StudentFragment;
 
@@ -56,6 +57,14 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                     break;
+                case R.id.nav_history: {
+                    if (!(currentFragment instanceof HistoryFragment)) {
+                        fragment = new HistoryFragment();
+                        loadFragment(fragment);
+                        return true;
+                    }
+                    break;
+                }
                 case R.id.nav_akun :
                     if (!(currentFragment instanceof AccountFragment)) {
                         fragment = new AccountFragment();

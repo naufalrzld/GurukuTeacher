@@ -59,6 +59,12 @@ public class Student {
         this.otherAccount = otherAccount;
     }
 
+    public Student(Integer studentID, String firstName, String lastName) {
+        this.studentID = studentID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public Integer getStudentID() {
         return studentID;
     }

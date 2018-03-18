@@ -2,6 +2,7 @@ package mbd.teacher.gurukuteacher.services.InterfaceServices;
 
 import org.json.JSONObject;
 
+import mbd.teacher.gurukuteacher.model.history.HistoryResponse;
 import mbd.teacher.gurukuteacher.model.student.StudentReqeustResponse;
 import mbd.teacher.gurukuteacher.model.teacher.CategoryResponse;
 import mbd.teacher.gurukuteacher.model.teacher.LoginResponse;
@@ -35,6 +36,9 @@ public interface TeacherInterface {
 
     @POST("/teacher/acceptRequest")
     Call<String> APIAcceptRequest(@Body JSONObject param);
+
+    @GET("/teacher/getBookingHistory/{teacherID}")
+    Call<HistoryResponse> APIGetBookingHistory(@Path("teacherID") int teacherID);
 
     @GET("/teacher/transaction/{teacherID}")
     Call<TransactionResponse> APIGetTransaction(@Path("teacherID") int teacherID);

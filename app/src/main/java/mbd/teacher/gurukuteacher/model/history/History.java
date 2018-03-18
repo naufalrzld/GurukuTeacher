@@ -1,15 +1,16 @@
-package mbd.teacher.gurukuteacher.model.transaction;
+package mbd.teacher.gurukuteacher.model.history;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import mbd.teacher.gurukuteacher.model.student.Student;
+import mbd.teacher.gurukuteacher.model.teacher.Teacher;
 
 /**
- * Created by Naufal on 21/02/2018.
+ * Created by Naufal on 19/02/2018.
  */
 
-public class Data {
+public class History {
     @SerializedName("bookID")
     @Expose
     private Integer bookID;
@@ -34,31 +35,18 @@ public class Data {
     @SerializedName("finish")
     @Expose
     private Integer finish;
-    @SerializedName("location")
-    @Expose
-    private String location;
-    @SerializedName("date")
-    @Expose
-    private String date;
-    @SerializedName("time")
-    @Expose
-    private String time;
     @SerializedName("Student")
     @Expose
     private Student student;
-    @SerializedName("Transaction")
+    @SerializedName("Teacher")
     @Expose
-    private Transaction transaction;
+    private Teacher teacher;
 
-    public Data(Integer bookID, Integer status, Integer duration, String location, String date, String time, Student student, Transaction transaction) {
+    public History(int bookID, int status, int finish, Student student) {
         this.bookID = bookID;
         this.status = status;
-        this.duration = duration;
-        this.location = location;
-        this.date = date;
-        this.time = time;
+        this.finish = finish;
         this.student = student;
-        this.transaction = transaction;
     }
 
     public Integer getBookID() {
@@ -125,30 +113,6 @@ public class Data {
         this.finish = finish;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public Student getStudent() {
         return student;
     }
@@ -157,11 +121,11 @@ public class Data {
         this.student = student;
     }
 
-    public Transaction getTransaction() {
-        return transaction;
+    public Teacher getTeacher() {
+        return teacher;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 }

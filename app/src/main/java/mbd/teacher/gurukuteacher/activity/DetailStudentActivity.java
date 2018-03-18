@@ -54,6 +54,13 @@ public class DetailStudentActivity extends AppCompatActivity {
     @BindView(R.id.tvPaymentStatus)
     TextView tvPaymentStatus;
 
+    @BindView(R.id.tvDate)
+    TextView tvDate;
+    @BindView(R.id.tvTime)
+    TextView tvTime;
+    @BindView(R.id.tvLocation)
+    TextView tvLocation;
+
     @BindView(R.id.tvUsername)
     TextView tvUsername;
     @BindView(R.id.tvNoTlp)
@@ -111,18 +118,25 @@ public class DetailStudentActivity extends AppCompatActivity {
         final int bookID;
         int status, statusTrx = 0;
         final int duration;
+        String location, date, time;
         if (from.equals("Stdn")) {
             DataRequest dataRequest = new Gson().fromJson(dataIntent.getStringExtra("bookData"), DataRequest.class);
             student = dataRequest.getStudent();
             bookID = dataRequest.getBookID();
             status = dataRequest.getStatus();
             duration = dataRequest.getDuration();
+            location = dataRequest.getLocation();
+            date = dataRequest.getDate();
+            time = dataRequest.getTime();
         } else {
             Data data = new Gson().fromJson(dataIntent.getStringExtra("bookData"), Data.class);
             student = data.getStudent();
             bookID = data.getBookID();
             status = data.getStatus();
             duration = data.getDuration();
+            location = data.getLocation();
+            date = data.getDate();
+            time = data.getTime();
             statusTrx = data.getTransaction().getStatus();
         }
 
@@ -132,8 +146,6 @@ public class DetailStudentActivity extends AppCompatActivity {
         String noTlp = student.getNoTlp();
         String lineAccount = student.getLineAccount();
         String noWA = student.getNoWA();
-        String igAccount = student.getIgAccount();
-        String otherAccount = student.getOtherAccount();
 
         String information;
         String infoPayment;
@@ -155,6 +167,9 @@ public class DetailStudentActivity extends AppCompatActivity {
         tvNama.setText(nama);
         tvStatus.setText(information);
         tvPaymentStatus.setText(infoPayment);
+        tvLocation.setText(location);
+        tvDate.setText(date);
+        tvTime.setText(time);
         tvDuration.setText(String.valueOf(duration));
         tvUsername.setText(username);
         tvNoTlp.setText(noTlp);

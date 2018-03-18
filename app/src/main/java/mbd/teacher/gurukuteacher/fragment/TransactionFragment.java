@@ -107,6 +107,9 @@ public class TransactionFragment extends Fragment implements SwipeRefreshLayout.
                             int bookID = data.getBookID();
                             int status = data.getStatus();
                             int duration = data.getDuration();
+                            String location = data.getLocation();
+                            String date = data.getDate();
+                            String time = data.getTime();
 
                             int trasactionID = transaction.getTransactioID();
                             int statusTrx = transaction.getStatus();
@@ -124,7 +127,7 @@ public class TransactionFragment extends Fragment implements SwipeRefreshLayout.
                             String igAccount = student.getIgAccount();
                             String otherAccount = student.getOtherAccount();
 
-                            listData.add(new Data(bookID, status, duration,
+                            listData.add(new Data(bookID, status, duration, location, date, time,
                                     new Student(studentID, username, fName, lName, email, noTlp,
                                             lineAccount, noWA, igAccount, otherAccount),
                                     new Transaction(trasactionID, bookID, statusTrx, paymentMethod, totalPrice)));
