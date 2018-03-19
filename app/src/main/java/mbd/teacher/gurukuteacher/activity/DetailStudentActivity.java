@@ -187,6 +187,7 @@ public class DetailStudentActivity extends AppCompatActivity {
                 try {
                     param.put("bookID", bookID);
                     param.put("status", 1);
+                    param.put("finish", 0);
                     param.put("total_price", price*duration);
 
                     acceptRequest(param);
@@ -202,6 +203,7 @@ public class DetailStudentActivity extends AppCompatActivity {
                 try {
                     param.put("bookID", bookID);
                     param.put("status", 2);
+                    param.put("finish", 1);
                     param.put("total_price", price*duration);
 
                     acceptRequest(param);

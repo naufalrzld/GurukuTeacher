@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -40,10 +41,10 @@ public class AccountFragment extends Fragment {
     TextView tvNoWA;
     @BindView(R.id.tvLineAccount)
     TextView tvLineAccout;
-    @BindView(R.id.tvEditProfile)
-    TextView tvEditProfile;
-    @BindView(R.id.tvLogout)
-    TextView tvLogout;
+    @BindView(R.id.lytEditProfile)
+    LinearLayout lytEditProfile;
+    @BindView(R.id.lytLogout)
+    LinearLayout lytLogout;
 
     private SessionManager session;
     private SharedPreferencesUtils sharedPreferencesUtils;
@@ -66,7 +67,7 @@ public class AccountFragment extends Fragment {
         session = new SessionManager(getContext());
         sharedPreferencesUtils = new SharedPreferencesUtils(getContext(), "DataMember");
 
-        tvEditProfile.setOnClickListener(new View.OnClickListener() {
+        lytEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), EditProfileActivity.class);
@@ -74,7 +75,7 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        tvLogout.setOnClickListener(new View.OnClickListener() {
+        lytLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 logout();

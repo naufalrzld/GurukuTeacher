@@ -111,7 +111,7 @@ public class TransactionFragment extends Fragment implements SwipeRefreshLayout.
                             String date = data.getDate();
                             String time = data.getTime();
 
-                            int trasactionID = transaction.getTransactioID();
+                            int trasactionID = transaction.getTransactionID();
                             int statusTrx = transaction.getStatus();
                             String paymentMethod = transaction.getPaymentMethod();
                             int totalPrice = transaction.getTotalPrice();
