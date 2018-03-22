@@ -38,17 +38,22 @@ public class DataRequest {
     @SerializedName("time")
     @Expose
     private String time;
+    @SerializedName("note")
+    @Expose
+    private String note;
     @SerializedName("Student")
     @Expose
     private Student student;
 
-    public DataRequest(Integer bookID, Integer status, Integer duration, String location, String date, String time, Student student) {
+    public DataRequest(Integer bookID, Integer status, Integer duration, String location, String date,
+                       String time, String note, Student student) {
         this.bookID = bookID;
         this.status = status;
         this.duration = duration;
         this.location = location;
         this.date = date;
         this.time = time;
+        this.note = note;
         this.student = student;
     }
 
@@ -130,6 +135,14 @@ public class DataRequest {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public Student getStudent() {

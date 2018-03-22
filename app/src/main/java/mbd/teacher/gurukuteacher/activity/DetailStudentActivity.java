@@ -53,6 +53,8 @@ public class DetailStudentActivity extends AppCompatActivity {
     CardView cvPaymentStatus;
     @BindView(R.id.tvPaymentStatus)
     TextView tvPaymentStatus;
+    @BindView(R.id.tvNote)
+    TextView tvNote;
 
     @BindView(R.id.tvDate)
     TextView tvDate;
@@ -118,7 +120,7 @@ public class DetailStudentActivity extends AppCompatActivity {
         final int bookID;
         int status, statusTrx = 0;
         final int duration;
-        String location, date, time;
+        String location, date, time, note;
         if (from.equals("Stdn")) {
             DataRequest dataRequest = new Gson().fromJson(dataIntent.getStringExtra("bookData"), DataRequest.class);
             student = dataRequest.getStudent();
@@ -128,6 +130,7 @@ public class DetailStudentActivity extends AppCompatActivity {
             location = dataRequest.getLocation();
             date = dataRequest.getDate();
             time = dataRequest.getTime();
+            note = dataRequest.getNote();
         } else {
             Data data = new Gson().fromJson(dataIntent.getStringExtra("bookData"), Data.class);
             student = data.getStudent();
@@ -137,6 +140,7 @@ public class DetailStudentActivity extends AppCompatActivity {
             location = data.getLocation();
             date = data.getDate();
             time = data.getTime();
+            note = data.getNote();
             statusTrx = data.getTransaction().getStatus();
         }
 
@@ -167,6 +171,7 @@ public class DetailStudentActivity extends AppCompatActivity {
         tvNama.setText(nama);
         tvStatus.setText(information);
         tvPaymentStatus.setText(infoPayment);
+        tvNote.setText(note);
         tvLocation.setText(location);
         tvDate.setText(date);
         tvTime.setText(time);

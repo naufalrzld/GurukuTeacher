@@ -99,6 +99,7 @@ public class StudentFragment extends Fragment implements SwipeRefreshLayout.OnRe
                             String location = dataRequest.getLocation();
                             String date = dataRequest.getDate();
                             String time = dataRequest.getTime();
+                            String note = dataRequest.getNote();
 
                             int studentID = student.getStudentID();
                             String username = student.getUsername();
@@ -111,9 +112,9 @@ public class StudentFragment extends Fragment implements SwipeRefreshLayout.OnRe
                             String igAccount = student.getIgAccount();
                             String otherAccount = student.getOtherAccount();
 
-                            dataRequestList.add(new DataRequest(bookID, status, duration, location, date, time,
-                                    new Student(studentID, username, fName, lName, email, noTlp, lineAccount,
-                                            noWA, igAccount, otherAccount)));
+                            dataRequestList.add(new DataRequest(bookID, status, duration, location,
+                                    date, time, note, new Student(studentID, username, fName, lName, email,
+                                    noTlp, lineAccount, noWA, igAccount, otherAccount)));
                         }
 
                         if (dataRequestList.isEmpty()) {
